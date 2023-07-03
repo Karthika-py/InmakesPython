@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block metadescription %}
+    {% if category %}
+        {{category.description|truncatewords:155}}
+    {% else %}
+        Welcome to Happiee Shoppiee Centre...
+    {% endif %}
+{% endblock %}
+{% block title %}
+{% if category %}
+        {{category.name}} - Happiee Shoppiee Centre
+    {% else %}
+        Explore the trendy world of Happiee Shoppiee Centre
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+{% if category %}
+    <div>
+        <div class="row my_row_class">
+            <div class="mx_auto">
+                 <p><a href="{% url 'shop:allProdCat' %}">Our Product Collections</a></p>
+            </div>
+        </div>
+    </div>
+{% endif %}
+<div class="mx_auto">
+    {% if category %}
+    <img class="my_image" src="{{category.image.url}}"alt="{{category.name}}">
+</div>
+<br>
+<div>
+    <h1 class="text-center my_title">{{category.name}}</h1>
+    <p class="text-justify">{{category.description}}</p>
+</div>
+{% else %}
+ <div>
+     <img class="my_image my_image_padding" src="{% static 'img/banner.png' %}" alt="Our Products"  style="width:1125px;height:300px;">
+ </div>
+<br>
+<div>
+    <h1 class="text-center my_title">Our Products Collections</h1>
+    <p class="text-justify">Don’t you think online buying and selling have become an essential part of our lives? It was youth and adults who initially relied on the internet to buy products at affordable prices with amazing return policies and guarantees, it was a trend back then.
+        Nowadays, eCommerce websites have made online shopping a common practice for people of all ages.</p>
+    <p class="text-justify">Happiee Shoppiee Centre is India's most popular eCommerce website, known for its innovative business model. Happiee Shoppiee Centre uses an undifferentiated targeting strategy, since people of all demography purchase items online which is available to everyone where delivery is possible.
+    National & Multinational ECommerce companies are giving neck-to-neck competition to each other, due to which their positioning is very important. Happiee Shoppiee Centre has positioned itself as a trustworthy and customer-friendly ECommerce brand. The online retail industry market is of a size of around $60 billion. It is expected to reach $200 billion by the year 2026. The Indian and global e-commerce industry is on the verge of exponential growth, and the introduction of high-speed internet has fueled the process across the nation.
+    </p>
+</div>
+{% endif %}
+
+<div class="container">
+    <div class="row mx_auto">
+        {% for product in products.object_list %}
+        <div class="my_bottom_margin col-9 col-sm-12 col-md-4 xol-lg-4">
+            <div class="card text-center" style="width:18rem;height=20rem;">
+                <a href="{{product.get_url}}"><img class="card-img-top my_image" src="{{product.image.url}}" alt="{{product.name}}"></a>
+                <div class="card-body">
+                    <h4>{{product.name}}</h4>
+                    <p>{{product.price}}</p>
+                </div>
+            </div>
+        </div>
+        {% endfor %}
+    </div>
+    <div class="mx-auto">
+            {% if products.paginator.num_pages > 1 %}
+
+            <hr>
+            <div class="text-center">
+                 {% for pg in products.paginator.page_range %}
+                    <a href="?page={{pg}}" class="btn btn-light btn-sm {% if products.number == pg %} active {% endif %}">{{pg}}</a>
+                 {% endfor %}
+            </div>
+            {% endif %}
+    </div>
+    <br>
+</div>
+{% endblock %}
+
+
